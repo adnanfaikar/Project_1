@@ -1,30 +1,33 @@
 <?php
 session_start();
 
-var_dump($_POST); // Untuk melihat apa yang dikirimkan dari form
+require_once "db_config.php";
 
 if(!isset($_SESSION['username'])){
-    echo "failed"; // Kirim respons "failed" jika pengguna belum login
+    echo "failed"; 
     exit();
 }
 
-// Periksa apakah data tugas sudah dikirimkan melalui form
+// Ambil data dari form
 if(isset($_POST['task_name']) && isset($_POST['task_description'])){
-    // Ambil data tugas dari form
     $task_name = $_POST['task_name'];
     $task_description = $_POST['task_description'];
+    $user_id = $_SESSION['user_id']; // Anda perlu mengambil user_id dari sesi
 
-    // Simpan data tugas ke dalam database atau tempat penyimpanan lainnya
-    // Contoh sederhana: menyimpan data tugas ke dalam array session
-    if(!isset($_SESSION['tasks'])){
-        $_SESSION['tasks'] = array();
+    // Siapkan statement SQL untuk menyimpan task baru
+    $stmt = $conn->prepare("INSERT INTO tasks (user_id, task_name, task_description) VALUES (?, ?, ?)");
+    $stmt->bind_param("iss", $user_id, $task_name, $task_description);
+
+    // Eksekusi statement
+    if ($stmt->execute()) {
+        echo "success"; 
+        exit();
+    } else {
+        echo "failed"; 
+        exit();
     }
-    $_SESSION['tasks'][] = array($task_name, $task_description);
-
-    echo "success"; // Kirim respons "success" jika tugas berhasil ditambahkan
-    exit();
 } else {
-    echo "failed"; // Kirim respons "failed" jika data tugas tidak lengkap
+    echo "failed"; 
     exit();
 }
 ?>

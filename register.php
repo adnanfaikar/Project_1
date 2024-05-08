@@ -35,7 +35,6 @@
     <div class="login">
         <p>Register</p>
         <input type="text" id="username" placeholder="username">
-        <input type="email" id="email" placeholder="email" id="">
         <input type="password" id="password" placeholder="password" id="">
         <input type="password" id="confirm_password" placeholder="confirm password" id="">
         <button onclick="register()">Register</button>        
@@ -44,7 +43,6 @@
     <script>
         function register() {
             var username = document.getElementById("username").value;
-            var email = document.getElementById("email").value;
             var password = document.getElementById("password").value;
             var confirm_password = document.getElementById("confirm_password").value;
             var xhr = new XMLHttpRequest();
@@ -59,7 +57,7 @@
             };
             xhr.open("POST", "register_process.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send("username=" + username + "&email=" + email + "&password=" + password + "&confirm_password=" + confirm_password);
+            xhr.send("username=" + username + "&password=" + password + "&confirm_password=" + confirm_password);
         }
     </script>
 </body>
